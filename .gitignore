@@ -1,1 +1,6 @@
 /Source
+*.interp
+*.tokens
+*.java
+*.class
+*.jar
