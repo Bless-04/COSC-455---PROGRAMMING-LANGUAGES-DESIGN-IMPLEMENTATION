@@ -6,4 +6,5 @@ Coursework for COSC 455 - Programming Languages Design & Implementation at Towso
 
 - **/Assignments** - General assignments.
 - **/Labs** - Lab Assignments
+- **/Projects** - Projects assignments
 
