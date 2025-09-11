@@ -7,3 +7,5 @@
 COSC455_HW1.docx
 COSC455_Fall_2025_Syllabus.pdf
 target
+*.exe
+*.pdb
