@@ -28,7 +28,6 @@ fn q1_parser(text: String) -> bool {
     // for each character in the character vector do...
     // where i starts at 1 and increments for each iteration
     for (i, character) in characters_array.iter().enumerate() {
-
         //checks first two inputs for uppercase letter
         if i <= 1 && !is_uppercase_letter(*character) {
             return false;
@@ -39,7 +38,6 @@ fn q1_parser(text: String) -> bool {
         else if !is_uppercase_or_digit(*character) {
             return false;
         }
-
     }
     return true;
 }
