@@ -19,6 +19,7 @@ fn is_uppercase_letter(c: char) -> bool {
     c >= 'A' && c <= 'Z'
 }
 
+/* language	: UPPERCASE_LETTER UPPERCASE_LETTER rest?; */
 fn q1_parser(text: String) -> bool {
 
     // make String into char vector
@@ -27,6 +28,11 @@ fn q1_parser(text: String) -> bool {
     // for each character in the character vector do...
     // where i starts at 1 and increments for each iteration
     for (i, character) in characters_array.iter().enumerate() {
-        // YOUR CODE GOES HERE
+       if (i == 0 || i == 1) && !is_uppercase_letter(*character) {
+            return false;
+       }
     }
+
+    return true;
+
 }
