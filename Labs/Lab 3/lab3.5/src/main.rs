@@ -39,5 +39,5 @@ fn q1_parser(text: String) -> bool {
             return false;
         }
     }
-    return true;
+    return false;
 }
