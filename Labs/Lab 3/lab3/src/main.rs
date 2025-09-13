@@ -28,11 +28,18 @@ fn q1_parser(text: String) -> bool {
     // for each character in the character vector do...
     // where i starts at 1 and increments for each iteration
     for (i, character) in characters_array.iter().enumerate() {
-       if (i == 0 || i == 1) && !is_uppercase_letter(*character) {
+
+        //checks first two inputs for uppercase letter
+        if i <= 1 && !is_uppercase_letter(*character) {
             return false;
-       }
+        }
+
+        //checks if {rest?} is uppercase or digit;
+        // tests pass without this; maybe an easter egg
+        else if !is_uppercase_or_digit(*character) {
+            return false;
+        }
+
     }
-
     return true;
-
 }
