@@ -10,21 +10,18 @@ impl Rectangle {
 
     fn area(&self) -> f64
     {
-        return self.width * self.height;
+        self.width * self.height
     }
 
     fn perimeter(&self) -> f64 {
-        return self.width + self.height;
+        self.width + self.height
     }
 
     fn is_square(&self) -> bool {
-
         if self.width == self.height {
             return true;
         }
-        else {
-            return false;
-        }
+        false
     }
 }
 

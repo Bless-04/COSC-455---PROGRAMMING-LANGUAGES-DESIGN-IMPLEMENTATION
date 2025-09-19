@@ -10,11 +10,11 @@ impl Circle {
     }
 
     fn area(&self) -> f64 {
-        return Circle::PI * (self.radius * self.radius);
+        Circle::PI * (self.radius * self.radius)
     }
 
     fn circumference(&self) -> f64 {
-        return 2.0 * Circle::PI* self.radius;
+        2.0 * Circle::PI* self.radius
     }
 }
 
