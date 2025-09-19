@@ -14,7 +14,7 @@ impl Circle {
     }
 
     fn circumference(&self) -> f64 {
-        2.0 * Circle::PI* self.radius
+        2.0 * Circle::PI * self.radius
     }
 }
 
