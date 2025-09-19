@@ -4,7 +4,7 @@ struct Rectangle {
 }
 
 impl Rectangle {
-    pub fn new(width: f64, height: f64) -> Rectangle {
+    fn new(width: f64, height: f64) -> Rectangle {
         Rectangle { width, height }
     }
 
@@ -19,12 +19,12 @@ impl Rectangle {
 
     fn is_square(&self) -> bool {
 
-            if self.width == self.height {
-                return true;
-            }
-            else {
-                return false;
-            }
+        if self.width == self.height {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
 
