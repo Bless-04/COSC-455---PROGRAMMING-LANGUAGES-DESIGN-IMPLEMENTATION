@@ -16,15 +16,16 @@ impl Circle {
     fn circumference(&self) -> f64 {
         return 2.0 * Circle::PI* self.radius;
     }
-
 }
 
-
 fn main(){
-    let circle = Circle::new(5.0);
+    let test: f64 = 1.0;
+    let circle = Circle::new(test);
 
     println!("Area: {}", circle.area());
     println!("Circumference: {}", circle.circumference());
-    assert_eq!(circle.area(), 78.5);
-    assert_eq!(circle.circumference(), 31.400000000000002);
+
+
+    assert!(Circle::PI == circle.area());
+    assert!(2.0 * Circle::PI== circle.circumference());
 }
