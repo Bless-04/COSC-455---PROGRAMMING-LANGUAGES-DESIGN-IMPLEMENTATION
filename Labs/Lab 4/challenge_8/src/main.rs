@@ -1,7 +1,7 @@
 use rand::Rng;
 use std::io;
 fn main() {
-    let N: u8  = rand::rng().random_range(1..=100);
+    let N: u8 = rand::rng().random_range(1..=100);
     let mut buffer = String::new();
     let mut guessed_number: u8; // assigning a default value makes a (never read) warning appear
 
@@ -14,7 +14,7 @@ fn main() {
         guessed_number = buffer
             .trim()
             .parse::<u8>()
-            .expect("Input is not a valid number");
+            .expect("Input is not a valid number"); // error message for bad input
 
         if guessed_number == N {
             println!("You guessed the number.");
@@ -22,11 +22,11 @@ fn main() {
         }
 
         if guessed_number < N {
-            println!("{} is too low",guessed_number);
+            println!("{} is too low", guessed_number);
         } else {
-            println!("{} is too high",guessed_number);
+            println!("{} is too high", guessed_number);
         }
 
-        buffer.clear();
+        buffer.clear(); // prep for next interation
     }
 }

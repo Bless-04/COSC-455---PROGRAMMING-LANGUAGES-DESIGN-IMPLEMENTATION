@@ -3,10 +3,10 @@ struct Circle {
 }
 
 impl Circle {
-    const PI: f64 = 3.14;
+    const PI: f64 = 3.14; // Pi constant as f64 for no math problems
 
     fn new(radius: f64) -> Circle {
-        Circle { radius}
+        Circle { radius }
     }
 
     fn area(&self) -> f64 {
@@ -18,14 +18,13 @@ impl Circle {
     }
 }
 
-fn main(){
+fn main() {
     let test: f64 = 1.0;
     let circle = Circle::new(test);
 
     println!("Area: {}", circle.area());
     println!("Circumference: {}", circle.circumference());
 
-
     assert!(Circle::PI == circle.area());
-    assert!(2.0 * Circle::PI== circle.circumference());
+    assert!(2.0 * Circle::PI == circle.circumference());
 }

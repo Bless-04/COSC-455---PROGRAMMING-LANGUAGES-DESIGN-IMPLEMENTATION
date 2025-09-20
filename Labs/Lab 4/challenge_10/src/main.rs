@@ -12,9 +12,9 @@ impl Rectangle {
         self.width * self.height
     }
 
-    fn scale(&mut self, M: f64) {
-        self.width *= M;
-        self.height *= M;
+    fn scale(&mut self, multiplier: f64) {
+        self.width *= multiplier;
+        self.height *= multiplier;
     }
 }
 
