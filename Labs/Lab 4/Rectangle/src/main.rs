@@ -14,14 +14,11 @@ impl Rectangle {
     }
 
     fn perimeter(&self) -> f64 {
-        self.width + self.height
+       2.0 * (self.width + self.height)
     }
 
     fn is_square(&self) -> bool {
-        if self.width == self.height {
-            return true;
-        }
-        false
+        self.width == self.height
     }
 }
 
