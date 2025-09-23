@@ -1,3 +1,5 @@
+use std::vec;
+
 pub struct Compiler {
     pub current_token: String,
 }
@@ -13,6 +15,7 @@ impl Compiler {
 pub struct LexicalAnalyzer {
     tokens: Vec<String>,
     pub articles: Vec<String>,
+    pub adverbs: Vec<String>,
     pub adjectives: Vec<String>,
     pub verbs: Vec<String>,
     pub nouns: Vec<String>,
@@ -20,7 +23,7 @@ pub struct LexicalAnalyzer {
 
 impl LexicalAnalyzer {
     pub fn new(input: &str) -> Self {
-        //puts a bunch of provided words into words so we can use themg3
+        //puts a bunch of provided words into words so we can use them
         let mut tokens: Vec<String> = input
             .split(' ')
             .filter(|s| !s.is_empty())
@@ -30,6 +33,7 @@ impl LexicalAnalyzer {
 
         Self {
             tokens,
+            adverbs: vec!["accidently".into(), "quickly".into(), "secretly".into()],
             articles: vec!["a".into(), "teh".into()],
             adjectives: vec!["fat".into(), "hungry".into(), "happy".into(), "mean".into()],
             verbs: vec!["lovez".into(), "hatez".into(), "ates".into()],
@@ -39,6 +43,7 @@ impl LexicalAnalyzer {
 
     pub fn lookup(&mut self, word: &str) -> bool {
         self.articles.iter().any(|a| a == word)
+            || self.adverbs.iter().any(|a| a == word)
             || self.adjectives.iter().any(|j| j == word)
             || self.nouns.iter().any(|n| n == word)
             || self.verbs.iter().any(|v| v == word)
@@ -71,7 +76,7 @@ impl LexicalAnalyzer {
         } else {
             eprintln!(
                 "A lexical error was encountered. '{}' is not a recognized token.",
-                candidate_token
+                &candidate_token
             );
             std::process::exit(1);
         }
@@ -92,6 +97,10 @@ impl LexicalAnalyzer {
     pub fn is_a_adjective(&self, word: &str) -> bool {
         self.adjectives.iter().any(|v| v == word)
     }
+
+    pub fn is_a_adverb(&self, word: &str) -> bool {
+        self.adverbs.iter().any(|adv| adv == word)
+    }
 }
 
 pub struct SyntaxAnalyzer<'a> {
@@ -111,6 +120,7 @@ impl<'a> SyntaxAnalyzer<'a> {
 
     pub fn lolspeak(&mut self) {
         self.noun_phrase();
+        self.adverb();
         self.verb();
         self.noun_phrase();
     }
@@ -127,7 +137,7 @@ impl<'a> SyntaxAnalyzer<'a> {
             self.next_token();
         } else {
             eprintln!(
-                "A syntax error was encountered. {} was found when an verb was expected",
+                "A syntax error was encountered. '{}' was found when a verb was expected",
                 self.compiler.current_token
             );
             std::process::exit(1);
@@ -139,7 +149,7 @@ impl<'a> SyntaxAnalyzer<'a> {
             self.next_token();
         } else {
             eprintln!(
-                "A syntax error was encounted. {} was found when an noun was expected",
+                "A syntax error was encounted. '{}' was found when a noun was expected",
                 &self.compiler.current_token
             );
             std::process::exit(1);
@@ -152,30 +162,39 @@ impl<'a> SyntaxAnalyzer<'a> {
             self.next_token(); //asks lexer to get next token
         } else {
             eprintln!(
-                "A Syntax error was encountered. {} was found when an article was expected",
+                "A Syntax error was encountered. '{}' was found when an article was expected",
                 self.compiler.current_token
             );
             std::process::exit(1);
         }
     }
 
+    //task 3
     pub fn adjective(&mut self) {
         if self.lexer.is_a_adjective(&self.compiler.current_token) {
             self.next_token();
         } else {
             eprintln!(
-                "A Syntax error was encountered. {} was found when an adjective was expected",
-                self.compiler.current_token
+                "A Syntax error was encountered. '{}' was found when an adjective was expected",
+                &self.compiler.current_token
             );
             std::process::exit(1);
+        }
+    }
+
+    //task 4
+    /** adverb is optional so the process doesnt exit if it doesnt exist */
+    pub fn adverb(&mut self) {
+        if self.lexer.is_a_adverb(&self.compiler.current_token) {
+            self.next_token();
         }
     }
 }
 
 fn main() {
-    let test1 = "a kat lovez teh dawg";
+    //let test1 = "a kat lovez teh dawg";
 
-    let sentence = test1; //"a kat teh dog";
+    let sentence = "teh mean kat secretly hatez teh happy rat"; //"a kat teh dog";
 
     //create instances of lexical analyzer
     let mut compiler = Compiler::new();
@@ -190,6 +209,5 @@ fn main() {
         eprintln!("A syntax error was encountered. Additional tokens found after the sentence.");
         std::process::exit(1);
     }
-    println!("{:?}", lexer.tokens);
     println!("The sentence '{}' follows the lolspeak grammar!", sentence);
 }
