@@ -104,6 +104,7 @@ impl LexicalAnalyzer {
 }
 
 pub struct SyntaxAnalyzer<'a> {
+    //borrowed references to lexer and compiler
     lexer: &'a mut LexicalAnalyzer,
     compiler: &'a mut Compiler,
 }
