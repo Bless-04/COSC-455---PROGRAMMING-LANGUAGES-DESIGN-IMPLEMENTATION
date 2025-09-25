@@ -1,5 +1,5 @@
 /Source
-**/gitignore/
+**/.vscode/
 *.interp
 *.tokens
 *.java
