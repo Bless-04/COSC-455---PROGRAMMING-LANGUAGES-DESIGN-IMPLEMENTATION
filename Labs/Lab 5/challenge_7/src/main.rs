@@ -23,13 +23,9 @@ fn main() {
 }
 
 fn trim_spaces(mut s: &str) -> &str {
+    let a;
+    a = 50;
     for (i, c) in s.chars().enumerate() {
-        if c == ' ' {
-            s = &s[i + 1..];
-        } else {
-            break;
-        }
+        if !c.is_whitespace() {}
     }
-
-    s
 }
