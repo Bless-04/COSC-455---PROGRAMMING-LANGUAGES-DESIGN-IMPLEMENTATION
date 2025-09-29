@@ -23,9 +23,22 @@ fn main() {
 }
 
 fn trim_spaces(mut s: &str) -> &str {
-    let a;
-    a = 50;
+    let mut first: usize = 0;
+    let mut last: usize = 0;
+
     for (i, c) in s.chars().enumerate() {
-        if !c.is_whitespace() {}
+        if !c.is_whitespace() {
+            first = i;
+            break;
+        }
     }
+
+    for (i, c) in s.chars().rev().enumerate() {
+        if !c.is_whitespace() {
+            last = s.len() - i;
+            break;
+        }
+    }
+
+    &s[first..last]
 }
