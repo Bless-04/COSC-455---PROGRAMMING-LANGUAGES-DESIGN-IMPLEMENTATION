@@ -41,6 +41,10 @@ impl LexicalAnalyzer {
         }
     }
 
+    /** loops if something is a valid token
+     * returns true if its valid
+     * false otherwise
+     */
     pub fn lookup(&mut self, word: &str) -> bool {
         self.articles.iter().any(|a| a == word)
             || self.adverbs.iter().any(|a| a == word)
@@ -195,7 +199,7 @@ impl<'a> SyntaxAnalyzer<'a> {
 fn main() {
     //let test1 = "a kat lovez teh dawg";
 
-    let sentence = "teh mean kat secretly hatez teh happy rat"; //"a kat teh dog";
+    let sentence = "teh hungry rat hatez teh mean dawg"; //"teh mean kat secretly hatez teh happy rat"; //"a kat teh dog";
 
     //create instances of lexical analyzer
     let mut compiler = Compiler::new();
