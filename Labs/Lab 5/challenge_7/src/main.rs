@@ -22,4 +22,14 @@ fn main() {
     println!("Tests passed!");
 }
 
-/* YOUR CODE GOES HERE */
+fn trim_spaces(mut s: &str) -> &str {
+    for (i, c) in s.chars().enumerate() {
+        if c == ' ' {
+            s = &s[i + 1..];
+        } else {
+            break;
+        }
+    }
+
+    s
+}
