@@ -1,3 +1,5 @@
+use crate::Compiler;
+
 /// Lolcompiler struct
 pub struct LolCompiler {
     current_token: String,
@@ -12,7 +14,7 @@ impl LolCompiler {
         }
     }
 }
-/*
+
 // Compiler impl for Lol compiler
 impl Compiler for LolCompiler {
     fn compile(&mut self, source: &str) {
@@ -35,4 +37,3 @@ impl Compiler for LolCompiler {
         todo!()
     }
 }
-*/
