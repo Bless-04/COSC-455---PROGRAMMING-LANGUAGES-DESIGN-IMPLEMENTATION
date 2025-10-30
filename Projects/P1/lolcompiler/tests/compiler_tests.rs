@@ -1,4 +1,4 @@
-use lol_compiler::parser::compiler::LolCompiler;
+use lolcompiler::parser::compiler::LolCompiler;
 
 #[cfg(test)]
 mod compiler_tests {
