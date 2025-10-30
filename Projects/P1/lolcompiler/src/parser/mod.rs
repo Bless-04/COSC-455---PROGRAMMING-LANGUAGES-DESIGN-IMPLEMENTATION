@@ -1,4 +1,4 @@
-pub mod lol_compiler;
+pub mod compiler;
 
 /*
 pub mod lol_lexical_analyzer;
