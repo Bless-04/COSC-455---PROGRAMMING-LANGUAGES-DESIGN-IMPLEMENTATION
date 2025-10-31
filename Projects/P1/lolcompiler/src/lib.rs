@@ -1,4 +1,5 @@
 pub mod parser;
+
 /// Trait for a simple lolcompiler front-end.
 /// Errors should cause immediate exit inside the implementation.
 pub trait Compiler {
