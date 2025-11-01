@@ -3,6 +3,7 @@ use crate::{
     parser::{lexer::LolLexer, parser::LolParser},
 };
 use std::fs;
+
 /// Lolcompiler struct
 pub struct LolCompiler {
     parser: LolParser,
@@ -25,7 +26,7 @@ impl LolCompiler {
 impl Compiler for LolCompiler {
     fn compile(&mut self, source: &str) {
         if !source.ends_with(".lol") {
-            eprintln!("Error: The file given is not a .lol file.");
+            eprintln!("'{}' is not a .lol file.", source);
             //  std::process::exit(1);
         }
 
