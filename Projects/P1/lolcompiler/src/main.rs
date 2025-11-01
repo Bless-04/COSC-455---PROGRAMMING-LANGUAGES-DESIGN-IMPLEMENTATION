@@ -11,13 +11,5 @@ fn main() {
     let path = &args[1];
     let mut compiler = LolCompiler::new();
     compiler.compile(path);
-
-    //let mut parser = SyntaxAnalyzer::new(&mut lexer, &mut compiler);
-    /*
-
-        if !lexer.tokens.is_empty() || !compiler.current_token.is_empty() {
-            eprintln!("A syntax error was encountered. Additional tokens found after the sentence.");
-            std::process::exit(1);
-        }
-    */
+    compiler.parse();
 }
