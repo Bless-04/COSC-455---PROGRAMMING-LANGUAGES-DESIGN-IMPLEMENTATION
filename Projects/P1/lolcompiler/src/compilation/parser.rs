@@ -1,18 +1,19 @@
-use core::error;
+use crate::{SyntaxAnalyzer, compilation::lexer::LolLexer};
 
-use crate::parser::{compiler::LolCompiler, lexer::LolLexer};
-use crate::{Compiler, SyntaxAnalyzer};
+// Syntax Analyzer struct for lolcode ; middle step of compiling ; 2
+pub struct LolParser<'a> {
+    lexer: LolLexer<'a>,
+}
 
-// Syntax Analyzer struct for lolcode
-pub struct LolParser {}
-
-impl LolParser {
-    pub fn new() -> Self {
-        Self {}
+impl<'a> LolParser<'a> {
+    pub fn new(token_source: LolLexer<'a>) -> Self {
+        Self {
+            lexer: token_source,
+        }
     }
 }
 
-impl SyntaxAnalyzer for LolParser {
+impl<'a> SyntaxAnalyzer for LolParser<'a> {
     //HAI <comments> < head> <body> KTHXBYE
     fn parse_lolcode(&mut self) -> Result<(), String> {
         todo!()

@@ -1,4 +1,4 @@
-use lolcompiler::{Compiler, parser::compiler::LolCompiler};
+use lolcompiler::{Compiler, compilation::compiler::LolCompiler};
 use std::env;
 
 fn main() {
@@ -6,10 +6,8 @@ fn main() {
     if args.len() < 2 {
         // 2 is filename
         eprintln!("Usage: lolcompiler <filepath>");
-        //std::process::exit(1);
+        std::process::exit(1);
     }
-    let path = &args[1];
-    let mut compiler = LolCompiler::new();
-    compiler.compile(path);
-    compiler.parse();
+
+    LolCompiler::new().compile(&args[1]);
 }
