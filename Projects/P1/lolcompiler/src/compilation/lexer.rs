@@ -1,7 +1,7 @@
 // heavily inspired from Lab 5's lexical analyzer
 
 use crate::{LexicalAnalyzer, compilation::token::Token};
-
+use std::str::CharIndices;
 static KEYWORDS: [&'static str; 16] = [
     "#HAI",
     "#KTHXBYE",
@@ -23,14 +23,14 @@ static KEYWORDS: [&'static str; 16] = [
 
 // Lexical Analyzer for lolcode ; first step of compiling ; 1
 pub struct LolLexer<'a> {
-    _text: &'a str,
+    _input: CharIndices<'a>, //source text
     _tokens: Vec<Token>,
 }
 
 impl<'a> LolLexer<'a> {
     pub fn new(text: &'a str) -> Self {
         Self {
-            _text: text,
+            _input: text.char_indices(), // rust char iterator that references text
             _tokens: Vec::new(),
         }
     }
@@ -74,9 +74,14 @@ pub fn is_a_article(&self, word: &str) -> bool {
 }
 */
 
-impl LexicalAnalyzer for LolLexer {
+impl LexicalAnalyzer for LolLexer<'_> {
     fn get_char(&mut self) -> char {
-        todo!()
+        let result = self._input.next();
+
+        match result {
+            Some((p, c)) => c,
+            None => '\0',
+        }
     }
 
     fn add_char(&mut self, c: char) {
