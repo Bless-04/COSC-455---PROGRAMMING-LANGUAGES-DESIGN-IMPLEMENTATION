@@ -9,5 +9,8 @@ fn main() {
         std::process::exit(1);
     }
 
-    LolCompiler::new().compile(&args[1]);
+    match LolCompiler::new().compile(&args[1]) {
+        true => println!("Compilation successful."),
+        false => println!("Compilation failed."),
+    }
 }
