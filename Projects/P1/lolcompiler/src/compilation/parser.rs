@@ -2,13 +2,13 @@ use crate::{SyntaxAnalyzer, compilation::lexer::LolLexer};
 
 // Syntax Analyzer struct for lolcode ; middle step of compiling ; 2
 pub struct LolParser<'a> {
-    lexer: LolLexer<'a>,
+    _lexer: LolLexer<'a>,
 }
 
 impl<'a> LolParser<'a> {
     pub fn new(token_source: LolLexer<'a>) -> Self {
         Self {
-            lexer: token_source,
+            _lexer: token_source,
         }
     }
 }
