@@ -36,6 +36,9 @@ impl<'a> LolLexer<'a> {
             _tokens: Vec::new(),
         }
     }
+    pub fn tokens(&self) -> &Vec<Token> {
+        &self._tokens
+    }
 }
 /*
 pub fn start(&mut self) -> String {
