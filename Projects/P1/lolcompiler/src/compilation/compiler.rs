@@ -28,10 +28,11 @@ impl Compiler for LolCompiler {
             return false;
         }
 
+        //convert to str
         let text: String =
             fs::read_to_string(source).expect(&format!("Failed to read '{}'", source));
 
-        // tokenizes the text on creation
+        // creates lexer for source text
         let lexer = LolLexer::new(text.as_str());
 
         // uses lexer to create parser
