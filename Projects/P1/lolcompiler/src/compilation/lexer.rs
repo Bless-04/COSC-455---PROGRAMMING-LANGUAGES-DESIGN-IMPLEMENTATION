@@ -25,11 +25,13 @@ static KEYWORDS: [&'static str; 16] = [
 pub struct LolLexer<'a> {
     _input: CharIndices<'a>, //source text
     _tokens: Vec<Token>,
+    _potential_token: String,
 }
 
 impl<'a> LolLexer<'a> {
     pub fn new(text: &'a str) -> Self {
         Self {
+            _potential_token: String::new(),
             _input: text.char_indices(), // rust char iterator that references text
             _tokens: Vec::new(),
         }
@@ -85,7 +87,7 @@ impl LexicalAnalyzer for LolLexer<'_> {
     }
 
     fn add_char(&mut self, c: char) {
-        todo!()
+        self._potential_token.push(c);
     }
 
     ///loops if something is a valid token
