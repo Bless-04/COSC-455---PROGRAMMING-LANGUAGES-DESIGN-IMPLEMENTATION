@@ -1,4 +1,5 @@
 // Token enum for lolcode tokens
+#[derive(Debug)]
 pub enum Token {
     Keyword(&'static str), // single keyword
 
