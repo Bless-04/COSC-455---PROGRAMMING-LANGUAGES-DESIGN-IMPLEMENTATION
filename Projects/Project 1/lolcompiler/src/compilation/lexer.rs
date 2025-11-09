@@ -1,7 +1,10 @@
 // heavily inspired from Lab 5's lexical analyzer
 
 use crate::{LexicalAnalyzer, compilation::token::Token};
-use std::str::CharIndices;
+use std::{
+    ops::{Index, Range, RangeFull},
+    str::CharIndices,
+};
 
 static KEYWORDS: [&'static str; 21] = [
     "#HAI",
@@ -32,13 +35,37 @@ static KEYWORDS: [&'static str; 21] = [
 pub struct LolLexer<'a> {
     _text: CharIndices<'a>, //source text
     _tokens: Vec<Token<'a>>,
-    _potential_token: &'a str,
+    _potential_token: String,
+}
+
+// implementing [index]  for LolLexer
+impl<'a> Index<usize> for LolLexer<'a> {
+    type Output = Token<'a>;
+    fn index(&self, index: usize) -> &Self::Output {
+        &self._tokens[index]
+    }
+}
+
+//implementing [start..end] for LolLexer
+impl<'a> Index<Range<usize>> for LolLexer<'a> {
+    type Output = [Token<'a>];
+    fn index(&self, index: Range<usize>) -> &Self::Output {
+        &self._tokens[index]
+    }
+}
+
+//implementing [..] for LolLexer
+impl<'a> Index<RangeFull> for LolLexer<'a> {
+    type Output = [Token<'a>];
+    fn index(&self, _index: RangeFull) -> &Self::Output {
+        &self._tokens[..]
+    }
 }
 
 impl<'a> LolLexer<'a> {
     pub fn new(text: &'a str) -> Self {
         Self {
-            _potential_token: "",
+            _potential_token: String::new(),
             _text: text.char_indices(), // rust char iterator that references text
             _tokens: Vec::new(),
         }
@@ -56,6 +83,18 @@ impl<'a> LolLexer<'a> {
 
     /// starts the lexical analyzer
     pub fn start(&mut self) {
+        //get first char
+        self._potential_token.clear();
+        self._tokens.clear();
+        self._tokens.push(Token::Comment("Test"));
+
+        while let Some((i, c)) = self._text.next() {
+            if Self::is_ws(c) {
+                continue;
+            } else {
+                self.add_char(c);
+            }
+        }
 
         /*
         let candidate_token = self.tokens.pop().unwrap_or_default();
@@ -110,7 +149,9 @@ impl LexicalAnalyzer for LolLexer<'_> {
         //todo: terminate program if exhausted
     }
 
-    fn add_char(&mut self, c: char) {}
+    fn add_char(&mut self, c: char) {
+        self._potential_token.push(c);
+    }
 
     fn lookup(&self, s: &str) -> bool {
         KEYWORDS.iter().any(|k| k.eq_ignore_ascii_case(s))
