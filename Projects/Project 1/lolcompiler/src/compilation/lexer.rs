@@ -86,7 +86,6 @@ impl<'a> LolLexer<'a> {
         //get first char
         self._potential_token.clear();
         self._tokens.clear();
-        self._tokens.push(Token::Comment("Test"));
 
         while let Some((i, c)) = self._text.next() {
             if Self::is_ws(c) {
