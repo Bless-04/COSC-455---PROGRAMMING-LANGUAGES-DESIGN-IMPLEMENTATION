@@ -33,9 +33,10 @@ static KEYWORDS: [&'static str; 21] = [
 #[derive(Debug)]
 // Lexical Analyzer for lolcode ; first step of compiling ; 1
 pub struct LolLexer<'a> {
-    _text: CharIndices<'a>, //source text
+    _text: &'a str,
     _tokens: Vec<Token<'a>>,
     _potential_token: String,
+    _position: usize,
 }
 
 // implementing [index]  for LolLexer
@@ -65,8 +66,9 @@ impl<'a> Index<RangeFull> for LolLexer<'a> {
 impl<'a> LolLexer<'a> {
     pub fn new(text: &'a str) -> Self {
         Self {
+            _position: 0,
             _potential_token: String::new(),
-            _text: text.char_indices(), // rust char iterator that references text
+            _text: text,
             _tokens: Vec::new(),
         }
     }
@@ -83,35 +85,50 @@ impl<'a> LolLexer<'a> {
 
     /// starts the lexical analyzer
     pub fn start(&mut self) {
-        //get first char
         self._potential_token.clear();
         self._tokens.clear();
 
-        while let Some((i, c)) = self._text.next() {
+        while self._position < self._text.len() {
+            let c = self.get_char();
+
             if Self::is_ws(c) {
                 continue;
-            } else {
+            } else if c == '#' {
+                //potential token start
                 self.add_char(c);
+                self.start_potential_token();
             }
         }
-
-        /*
-        let candidate_token = self.tokens.pop().unwrap_or_default();
-
-        if self.lookup(&candidate_token) {
-            candidate_token
-        } else if !candidate_token.is_empty() {
-            eprintln!(
-                "A lexical error was encountered. '{}' is not a recognized token.",
-                candidate_token
-            );
-            std::process::exit(1);
-        } else {
-            eprintln!("A user error was encountered. The provided sentence is empty.");
-            std::process::exit(1);
-        }
-        */
     }
+
+    /// helper function to handle potential token logic
+    /// consumes characters until whitespace is found and add to token list
+    fn start_potential_token(&mut self) {
+        while self._position < self._text.len() {
+            let c = self.get_char();
+            if Self::is_ws(c) {
+                break;
+            }
+            self.add_char(c);
+        }
+    }
+
+    /*
+    let candidate_token = self.tokens.pop().unwrap_or_default();
+
+    if self.lookup(&candidate_token) {
+        candidate_token
+    } else if !candidate_token.is_empty() {
+        eprintln!(
+            "A lexical error was encountered. '{}' is not a recognized token.",
+            candidate_token
+        );
+        std::process::exit(1);
+    } else {
+        eprintln!("A user error was encountered. The provided sentence is empty.");
+        std::process::exit(1);
+    }
+    */
 }
 /*
 
@@ -139,13 +156,11 @@ pub fn is_a_article(&self, word: &str) -> bool {
 
 impl LexicalAnalyzer for LolLexer<'_> {
     fn get_char(&mut self) -> char {
-        let result = self._text.next();
-
-        match result {
-            Some((_, c)) => c,
-            None => '\0',
+        if self._position >= self._text.len() {
+            return '\0';
         }
-        //todo: terminate program if exhausted
+        self._position += 1;
+        self._text.chars().nth(self._position).unwrap_or('\0')
     }
 
     fn add_char(&mut self, c: char) {
