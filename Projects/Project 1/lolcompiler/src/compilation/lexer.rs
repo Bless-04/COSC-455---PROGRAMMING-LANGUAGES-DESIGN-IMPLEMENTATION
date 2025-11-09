@@ -31,30 +31,31 @@ static KEYWORDS: [&'static str; 21] = [
 // Lexical Analyzer for lolcode ; first step of compiling ; 1
 pub struct LolLexer<'a> {
     _text: CharIndices<'a>, //source text
-    _tokens: Vec<Token>,
-    _potential_token: String,
+    _tokens: Vec<Token<'a>>,
+    _potential_token: &'a str,
 }
 
 impl<'a> LolLexer<'a> {
-    fn is_keyword(s: &str) -> bool {
-        KEYWORDS.iter().any(|k| k.eq_ignore_ascii_case(s))
-    }
-
-    fn is_ws(c: char) -> bool {
-        c != '\n' || c.is_whitespace()
-    }
     pub fn new(text: &'a str) -> Self {
         Self {
-            _potential_token: String::new(),
+            _potential_token: "",
             _text: text.char_indices(), // rust char iterator that references text
             _tokens: Vec::new(),
         }
     }
 
-    pub fn tokens(&self) -> &Vec<Token> {
+    /// returns true if whitespace
+    fn is_ws(c: char) -> bool {
+        c != '\n' || c.is_whitespace()
+    }
+
+    // readonly access to tokens
+    pub fn tokens(&self) -> &Vec<Token<'a>> {
         &self._tokens
     }
-    pub fn tokenize(&mut self) {
+
+    /// starts the lexical analyzer
+    pub fn start(&mut self) {
 
         /*
         let candidate_token = self.tokens.pop().unwrap_or_default();
@@ -109,14 +110,9 @@ impl LexicalAnalyzer for LolLexer<'_> {
         //todo: terminate program if exhausted
     }
 
-    fn add_char(&mut self, c: char) {
-        self._potential_token.push(c);
-    }
+    fn add_char(&mut self, c: char) {}
 
-    ///loops if something is a valid token
-    ///returns true if its valid
-    /// false otherwise
     fn lookup(&self, s: &str) -> bool {
-        Self::is_keyword(s)
+        KEYWORDS.iter().any(|k| k.eq_ignore_ascii_case(s))
     }
 }
