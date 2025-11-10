@@ -9,12 +9,18 @@ use crate::{
 // Syntax Analyzer struct for lolcode ; middle step of compiling ; 2
 pub struct LolParser<'a> {
     _lexer: LolLexer<'a>,
+    _html: String,
+    _variables: HashMap<String, String>, // vardef, varval
 }
 
 impl<'a> LolParser<'a> {
     pub fn new(token_source: LolLexer<'a>) -> Self {
+    pub fn new(mut token_source: LolLexer<'a>) -> Self {
+        token_source.start(); // Tokenize the input
         Self {
             _lexer: token_source,
+            _html: String::new(),
+            _variables: HashMap::new(),
         }
     }
 }
