@@ -69,9 +69,14 @@ impl<'a> LolLexer<'a> {
             let c = self.get_char();
             if c.is_whitespace() {
             } else if c == '#' {
-                //potential token start
                 self._potential_token.push(c);
-                self.start_potential_token();
+                //potential token start
+
+                let token = self.start_potential_token();
+                match token {
+                    Ok(t) => self._tokens.push(t),
+                    Err(e) => panic!("{}", e),
+                }
                 self._potential_token.clear();
             }
         }
@@ -79,7 +84,7 @@ impl<'a> LolLexer<'a> {
 
     /// helper function to handle potential token logic
     /// consumes characters until whitespace is found and add to token list
-    fn start_potential_token(&mut self) {
+    fn start_potential_token(&mut self) -> Result<Token<'a>, String> {
         let mut end_pos = self._position;
         while self._position < self._text.len() {
             let c = self.get_char();
@@ -95,38 +100,18 @@ impl<'a> LolLexer<'a> {
             || &self._text[self._position - self._potential_token.len() - 1..end_pos - 1];
 
         let s: &str = self._potential_token.as_str();
+
         //checks if valid token
         if self.lookup(s) {
             // case when token is one of the keywords
             if let Some(token) = Token::try_parse(s) {
-                self._tokens.push(token);
-            } else {
-                //if it contains a
+                return Ok(token);
             }
         }
+
+        Err(format!("Lexical Error: Invalid token '{}'", current_str()))
     }
 }
-/*
-
-
-pub fn next(&mut self) -> String {
-    let candidate_token = self.tokens.pop().unwrap_or_default();
-
-    if self.lookup(&candidate_token) {
-        candidate_token
-    } else if self.tokens.is_empty() {
-        "".to_string()
-    } else {
-        eprintln!(
-            "A lexical error was encountered. '{}' is not a recognized token.",
-            &candidate_token
-        );
-        std::process::exit(1);
-    }
-}
-
-
-*/
 
 impl LexicalAnalyzer for LolLexer<'_> {
     fn get_char(&mut self) -> char {
