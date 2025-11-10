@@ -1,34 +1,7 @@
 // heavily inspired from Lab 5's lexical analyzer
 
 use crate::{LexicalAnalyzer, compilation::token::Token};
-use std::{
-    ops::{Index, Range, RangeFull},
-    str::CharIndices,
-};
-
-static KEYWORDS: [&'static str; 21] = [
-    "#HAI",
-    "#KTHXBYE",
-    "#OBTW",
-    "#TLDR",
-    "#MAEK",
-    "#OIC",
-    "#GIMMEH",
-    "#MKAY",
-    "HEAD",
-    "TITLE",
-    "PARAGRAF",
-    "BOLD",
-    "ITALICS",
-    "LIST",
-    "ITEM",
-    "NEWLINE",
-    "SOUNDZ",
-    "VIDZ",
-    "#I HAZ",
-    "#IT IZ",
-    "#LEMME SEE",
-];
+use std::ops::{Index, Range, RangeFull};
 
 #[derive(Debug)]
 // Lexical Analyzer for lolcode ; first step of compiling ; 1
@@ -73,11 +46,15 @@ impl<'a> LolLexer<'a> {
         }
     }
 
-    /// returns true if whitespace
-    fn is_ws(c: char) -> bool {
-        c != '\n' || c.is_whitespace()
+    /// looks ahead 1 char
+    fn peek(&self) -> char {
+        if self._position + 1 < self._text.len() {
+            let c = self._text.as_bytes()[self._position + 1] as char; //works because only ascii
+            c
+        } else {
+            '\0' //null char
+        }
     }
-
     // readonly access to tokens
     pub fn tokens(&self) -> &Vec<Token<'a>> {
         &self._tokens
@@ -90,13 +67,12 @@ impl<'a> LolLexer<'a> {
 
         while self._position < self._text.len() {
             let c = self.get_char();
-
-            if Self::is_ws(c) {
-                continue;
+            if c.is_whitespace() {
             } else if c == '#' {
                 //potential token start
-                self.add_char(c);
+                self._potential_token.push(c);
                 self.start_potential_token();
+                self._potential_token.clear();
             }
         }
     }
@@ -104,31 +80,31 @@ impl<'a> LolLexer<'a> {
     /// helper function to handle potential token logic
     /// consumes characters until whitespace is found and add to token list
     fn start_potential_token(&mut self) {
+        let mut end_pos = self._position;
         while self._position < self._text.len() {
             let c = self.get_char();
-            if Self::is_ws(c) {
+            end_pos += 1;
+            if c.is_whitespace() {
                 break;
             }
-            self.add_char(c);
+            self._potential_token.push(c);
+        }
+
+        //anon function to get &str from current potential token
+        let current_str =
+            || &self._text[self._position - self._potential_token.len() - 1..end_pos - 1];
+
+        let s: &str = self._potential_token.as_str();
+        //checks if valid token
+        if self.lookup(s) {
+            // case when token is one of the keywords
+            if let Some(token) = Token::try_parse(s) {
+                self._tokens.push(token);
+            } else {
+                //if it contains a
+            }
         }
     }
-
-    /*
-    let candidate_token = self.tokens.pop().unwrap_or_default();
-
-    if self.lookup(&candidate_token) {
-        candidate_token
-    } else if !candidate_token.is_empty() {
-        eprintln!(
-            "A lexical error was encountered. '{}' is not a recognized token.",
-            candidate_token
-        );
-        std::process::exit(1);
-    } else {
-        eprintln!("A user error was encountered. The provided sentence is empty.");
-        std::process::exit(1);
-    }
-    */
 }
 /*
 
@@ -149,18 +125,18 @@ pub fn next(&mut self) -> String {
     }
 }
 
-pub fn is_a_article(&self, word: &str) -> bool {
-    self.articles.iter().any(|a| a == word)
-}
+
 */
 
 impl LexicalAnalyzer for LolLexer<'_> {
     fn get_char(&mut self) -> char {
-        if self._position >= self._text.len() {
-            return '\0';
+        if self._position < self._text.len() {
+            let c = self._text.as_bytes()[self._position] as char; //works because only ascii
+            self._position += 1;
+            c
+        } else {
+            panic!("Input exhausted");
         }
-        self._position += 1;
-        self._text.chars().nth(self._position).unwrap_or('\0')
     }
 
     fn add_char(&mut self, c: char) {
@@ -168,6 +144,16 @@ impl LexicalAnalyzer for LolLexer<'_> {
     }
 
     fn lookup(&self, s: &str) -> bool {
-        KEYWORDS.iter().any(|k| k.eq_ignore_ascii_case(s))
+        //loop for A-Z, a-z, 0-9, commas, period, quotes, colons, question marks, underscores and forward slashes
+        s.chars().all(|c| {
+            c.is_ascii_alphanumeric()
+                || c == ','
+                || c == '.'
+                || c == '\''
+                || c == ':'
+                || c == '?'
+                || c == '_'
+                || c == '/'
+        })
     }
 }
