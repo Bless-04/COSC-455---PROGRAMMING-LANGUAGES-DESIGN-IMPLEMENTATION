@@ -23,17 +23,25 @@ pub enum Token<'a> {
     ITIZ,
     LEMMESEE,
 
-    VARDEF(&'a str),  // any single word (A–Z, a–z, no spaces)
-    VARVAL(&'a str),  // allowed text characters
-    TEXT(&'a str),    // plain text (letters, digits, punctuation, spaces)
-    ADDRESS(&'a str), // text without spaces
-    END,
+    /// any single word (A–Z, a–z, no spaces)
+    VarDef(&'a str),
+
+    /// allowed text characters
+    VarVal(&'a str),
+
+    /// plain text (letters, digits, punctuation, spaces)
+    Text(&'a str),
+
+    /// text without spaces
+    Address(&'a str),
+
+    End,
 }
 
 impl Token<'_> {
-    //tries to parse a &str into a Token ; returns Option<Token>
-    /// idea stolen from csharps int.TryParse
-    pub fn try_parse(text: &'_ str) -> Option<Token<'_>> {
+    /// inspired by csharps int.TryParse
+    /// tries to parse a &str into a keyword Token ; returns Option<Token>
+    pub fn try_parse(text: &str) -> Option<Token<'static>> {
         match text.to_ascii_uppercase().as_str() {
             "#HAI" => Some(Token::HAI),
             "#KTHXBYE" => Some(Token::KTHXBYE),
