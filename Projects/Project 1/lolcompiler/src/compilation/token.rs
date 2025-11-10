@@ -1,5 +1,5 @@
 // Token enum for lolcode tokens
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Token<'a> {
     HAI,
     KTHXBYE,
