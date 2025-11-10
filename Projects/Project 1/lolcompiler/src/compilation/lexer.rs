@@ -25,7 +25,7 @@ impl<'a> LolLexer<'a> {
     pub fn start(&mut self) {
         self._potential_token.clear();
         self._tokens.clear();
-        self._position = 0; // Reset position for tokenization
+        self._position = 0; // Reset position to fix reuse issue
 
         while self._position < self._text.len() {
             let c = self.get_char();
@@ -44,7 +44,7 @@ impl<'a> LolLexer<'a> {
         }
 
         self._tokens.push(Token::End);
-        self._position = 0; //reset position for syntax analyzer to read tokens
+        self._position = 0; //resetting position for when syntax analyzer to read tokens
     }
 
     pub fn peek_token(&self) -> Option<&Token<'a>> {
