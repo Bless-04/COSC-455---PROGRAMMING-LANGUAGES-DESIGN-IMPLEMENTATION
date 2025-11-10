@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, process::Command};
 
 use crate::{
     Compiler, SyntaxAnalyzer,
@@ -50,8 +50,22 @@ impl Compiler for LolCompiler {
                 // Write HTML to file
                 match fs::write(&output_file, parser.get_html()) {
                     Ok(_) => {
-                        println!("Compilation successful. Output written to: {}", output_file);
-                        true
+                        //println!("Compilation successful. Output written to: {}", output_file); not need
+                        //open file from chrome
+
+                        let output = Command::new("cmd")
+                            .arg("/C")
+                            .arg("start")
+                            .arg("") // Empty title for the new window
+                            .arg(output_file)
+                            .spawn();
+                        match output {
+                            Ok(_) => true,
+                            Err(e) => {
+                                eprintln!("Error opening HTML file in browser: {}", e);
+                                false
+                            }
+                        }
                     }
                     Err(e) => {
                         eprintln!("Error writing HTML file: {}", e);
