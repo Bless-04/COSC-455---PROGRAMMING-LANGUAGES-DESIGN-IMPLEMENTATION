@@ -1,10 +1,10 @@
-pub mod parser;
+pub mod compilation;
 
 /// Trait for a simple lolcompiler front-end.
 /// Errors should cause immediate exit inside the implementation.
 pub trait Compiler {
     /// Begin the compilation process (entry point).
-    fn compile(&mut self, source: &str);
+    fn compile(&mut self, source: &str) -> bool; //adding bool for success/failure
 
     /// Get the next token from the lexical analyzer.
     fn next_token(&mut self) -> String;
