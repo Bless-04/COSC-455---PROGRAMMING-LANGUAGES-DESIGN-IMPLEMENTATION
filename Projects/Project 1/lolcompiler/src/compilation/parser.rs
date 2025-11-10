@@ -1,4 +1,3 @@
-use crate::{SyntaxAnalyzer, compilation::lexer::LolLexer};
 use std::collections::HashMap;
 
 use crate::{
@@ -14,7 +13,6 @@ pub struct LolParser<'a> {
 }
 
 impl<'a> LolParser<'a> {
-    pub fn new(token_source: LolLexer<'a>) -> Self {
     pub fn new(mut token_source: LolLexer<'a>) -> Self {
         token_source.start(); // Tokenize the input
         Self {
