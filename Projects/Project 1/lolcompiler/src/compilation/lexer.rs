@@ -29,7 +29,8 @@ impl<'a> LolLexer<'a> {
         while self._position < self._text.len() {
             let c = self.get_char();
             if c.is_whitespace() {
-            } else if c == '#' {
+                continue;
+            } else if c == '#' || c.is_ascii_alphanumeric() {
                 //potential token start
                 self._potential_token.push(c);
                 let token = self.start_potential_token();
