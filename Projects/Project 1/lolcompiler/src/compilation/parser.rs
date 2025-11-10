@@ -1,4 +1,10 @@
 use crate::{SyntaxAnalyzer, compilation::lexer::LolLexer};
+use std::collections::HashMap;
+
+use crate::{
+    SyntaxAnalyzer,
+    compilation::{lexer::LolLexer, token::Token},
+};
 
 // Syntax Analyzer struct for lolcode ; middle step of compiling ; 2
 pub struct LolParser<'a> {
