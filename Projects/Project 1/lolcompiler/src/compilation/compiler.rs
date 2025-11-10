@@ -5,7 +5,7 @@ use crate::{
     compilation::{lexer::LolLexer, parser::LolParser},
 };
 
-/// Lolcompiler struct ; last step of compiling ; 3
+/// Lolcompiler struct ; last step of compiling ;
 pub struct LolCompiler {
     _current_token: String,
 }
@@ -34,14 +34,36 @@ impl Compiler for LolCompiler {
         // creates lexer from source text
         let lexer = LolLexer::new(text.as_str());
 
-        // uses lexer to create parser
-        let parser = LolParser::new(lexer)
-            .parse_lolcode()
-            .expect(&format!("Failed to parse '{}'", source));
+        // uses lexer to create parser (parser will tokenize in new())
+        let mut parser = LolParser::new(lexer);
 
-        //println!("source: {} [{}]", source, text.len());
+        // Parse the lolcode
+        match parser.parse_lolcode() {
+            Ok(()) => {
+                // Generate output filename by replacing .lol with .html
+                let output_file = if source.ends_with(".lol") {
+                    source[..source.len() - 4].to_string() + ".html"
+                } else {
+                    source.to_string() + ".html"
+                };
 
-        true
+                // Write HTML to file
+                match fs::write(&output_file, parser.get_html()) {
+                    Ok(_) => {
+                        println!("Compilation successful. Output written to: {}", output_file);
+                        true
+                    }
+                    Err(e) => {
+                        eprintln!("Error writing HTML file: {}", e);
+                        false
+                    }
+                }
+            }
+            Err(e) => {
+                eprintln!("Parse error: {}", e);
+                false
+            }
+        }
     }
 
     fn next_token(&mut self) -> String {
