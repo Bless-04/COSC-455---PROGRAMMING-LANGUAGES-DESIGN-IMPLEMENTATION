@@ -1,7 +1,6 @@
 // heavily inspired from Lab 5's lexical analyzer
 
 use crate::{LexicalAnalyzer, compilation::token::Token};
-use std::ops::{Index, Range, RangeFull};
 
 #[derive(Debug)]
 // Lexical Analyzer for lolcode ; first step of compiling ; 1
@@ -10,30 +9,6 @@ pub struct LolLexer<'a> {
     _tokens: Vec<Token<'a>>,
     _potential_token: String,
     _position: usize,
-}
-
-// implementing [index]  for LolLexer
-impl<'a> Index<usize> for LolLexer<'a> {
-    type Output = Token<'a>;
-    fn index(&self, index: usize) -> &Self::Output {
-        &self._tokens[index]
-    }
-}
-
-//implementing [start..end] for LolLexer
-impl<'a> Index<Range<usize>> for LolLexer<'a> {
-    type Output = [Token<'a>];
-    fn index(&self, index: Range<usize>) -> &Self::Output {
-        &self._tokens[index]
-    }
-}
-
-//implementing [..] for LolLexer
-impl<'a> Index<RangeFull> for LolLexer<'a> {
-    type Output = [Token<'a>];
-    fn index(&self, _index: RangeFull) -> &Self::Output {
-        &self._tokens[..]
-    }
 }
 
 impl<'a> LolLexer<'a> {
@@ -46,20 +21,6 @@ impl<'a> LolLexer<'a> {
         }
     }
 
-    /// looks ahead 1 char
-    fn peek(&self) -> char {
-        if self._position + 1 < self._text.len() {
-            let c = self._text.as_bytes()[self._position + 1] as char; //works because only ascii
-            c
-        } else {
-            '\0' //null char
-        }
-    }
-    // readonly access to tokens
-    pub fn tokens(&self) -> &Vec<Token<'a>> {
-        &self._tokens
-    }
-
     /// starts the lexical analyzer
     pub fn start(&mut self) {
         self._potential_token.clear();
@@ -69,9 +30,8 @@ impl<'a> LolLexer<'a> {
             let c = self.get_char();
             if c.is_whitespace() {
             } else if c == '#' {
-                self._potential_token.push(c);
                 //potential token start
-
+                self._potential_token.push(c);
                 let token = self.start_potential_token();
                 match token {
                     Ok(t) => self._tokens.push(t),
@@ -100,13 +60,21 @@ impl<'a> LolLexer<'a> {
             || &self._text[self._position - self._potential_token.len() - 1..end_pos - 1];
 
         let s: &str = self._potential_token.as_str();
-
         //checks if valid token
         if self.lookup(s) {
             // case when token is one of the keywords
             if let Some(token) = Token::try_parse(s) {
                 return Ok(token);
+            } else {
+                // otherwise it's a VarDef or VarVal
+                //check if it has any non-letter characters
+                if s.chars().all(|c| c.is_ascii_alphabetic()) {
+                    return Ok(Token::VarDef(current_str()));
+                } else {
+                    return Ok(Token::VarVal(current_str()));
+                }
             }
+            //if it has a digit i
         }
 
         Err(format!("Lexical Error: Invalid token '{}'", current_str()))
@@ -139,6 +107,18 @@ impl LexicalAnalyzer for LolLexer<'_> {
                 || c == '?'
                 || c == '_'
                 || c == '/'
+                || c == '#'
         })
+    }
+}
+
+//for easier testing
+use std::ops::Deref;
+
+impl<'a> Deref for LolLexer<'a> {
+    type Target = [Token<'a>];
+
+    fn deref(&self) -> &Self::Target {
+        &self._tokens
     }
 }
