@@ -19,9 +19,12 @@ pub enum Token<'a> {
     NEWLINE,
     SOUNDZ,
     VIDZ,
-    IHAZ,
-    ITIZ,
-    LEMMESEE,
+    I,
+    HAZ,
+    IT,
+    IZ,
+    LEMME,
+    SEE,
 
     /// any single word (A–Z, a–z, no spaces)
     VarDef(&'a str),
@@ -61,9 +64,12 @@ impl Token<'_> {
             "NEWLINE" => Some(Token::NEWLINE),
             "SOUNDZ" => Some(Token::SOUNDZ),
             "VIDZ" => Some(Token::VIDZ),
-            "#I HAZ" => Some(Token::IHAZ),
-            "#IT IZ" => Some(Token::ITIZ),
-            "#LEMME SEE" => Some(Token::LEMMESEE),
+            "#I" => Some(Token::I),
+            "HAZ" => Some(Token::HAZ),
+            "#IT" => Some(Token::IT),
+            "IZ" => Some(Token::IZ),
+            "#LEMME" => Some(Token::LEMME),
+            "SEE" => Some(Token::SEE),
             _ => None,
         }
     }

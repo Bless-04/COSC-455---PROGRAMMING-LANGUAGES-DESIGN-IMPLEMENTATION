@@ -67,12 +67,28 @@ impl<'a> LolLexer<'a> {
             if let Some(token) = Token::try_parse(s) {
                 return Ok(token);
             } else {
-                // otherwise it's a VarDef or VarVal
-                //check if it has any non-letter characters
-                if s.chars().all(|c| c.is_ascii_alphabetic()) {
-                    return Ok(Token::VarDef(current_str()));
-                } else {
-                    return Ok(Token::VarVal(current_str()));
+                // if the last token is video or soundz, then the current token is an Address
+                let last_token = self._tokens.last();
+                if last_token.is_none() {
+                    return Err(format!(
+                        "Syntax Error: The first token should atleast be a keyword but was '{}'",
+                        current_str()
+                    ));
+                }
+                match last_token.unwrap() {
+                    Token::SOUNDZ | Token::VIDZ => {
+                        //address case
+                        return Ok(Token::Address(current_str()));
+                    }
+                    Token::HAZ => {
+                        return Ok(Token::VarDef(current_str()));
+                    }
+                    Token::IZ => {
+                        return Ok(Token::VarVal(current_str()));
+                    }
+                    _ => {
+                        return Ok(Token::Text(current_str()));
+                    }
                 }
             }
             //if it has a digit i
