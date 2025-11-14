@@ -1,12 +1,22 @@
 use std::vec;
 
-const CHINESE: [&str; 11] = [
-    "ling", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu", "shi",
-];
-
-const ENGLISH: [&str; 11] = [
-    "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-];
+/// matches chinese or english word to number or none
+fn match_word(input: &str) -> Option<i32> {
+    match input.to_ascii_lowercase().as_str() {
+        "ling" | "zero" => Some(0),
+        "yi" | "one" => Some(1),
+        "er" | "two" => Some(2),
+        "san" | "three" => Some(3),
+        "si" | "four" => Some(4),
+        "wu" | "five" => Some(5),
+        "liu" | "six" => Some(6),
+        "qi" | "seven" => Some(7),
+        "ba" | "eight" => Some(8),
+        "jiu" | "nine" => Some(9),
+        "shi" | "ten" => Some(10),
+        _ => None,
+    }
+}
 
 /// exists to match word doc output
 /// n+...n = sum
@@ -41,13 +51,15 @@ fn print_product(input: &Vec<i32>) -> i32 {
 ///returns number vector
 /// input should be split by words
 fn go(input: &Vec<&str>) -> Vec<i32> {
+    if input.is_empty() {
+        return vec![];
+    }
+
     let mut result: Vec<i32> = vec![];
 
     for word in input {
-        if let Some(pos) = CHINESE.iter().position(|&s| s.eq_ignore_ascii_case(word)) {
-            result.push(pos as i32);
-        } else if let Some(pos) = ENGLISH.iter().position(|&s| s.eq_ignore_ascii_case(word)) {
-            result.push(pos as i32);
+        if let Some(number) = match_word(word) {
+            result.push(number);
         }
     }
 
@@ -57,6 +69,7 @@ fn go(input: &Vec<&str>) -> Vec<i32> {
 
     print_product(&result);
 
+    println!();
     result
 }
 
@@ -77,7 +90,7 @@ fn main() {
     assert_eq!(
         numbers,
         go(&vec![
-            "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu", "shi"
+            "skip", "yi", "er", "san", "si", "wu", "liu", "qi", "ba", "jiu", "shi"
         ]),
         "Chinese is failing"
     );
@@ -85,7 +98,7 @@ fn main() {
     assert_eq!(
         numbers,
         go(&vec![
-            "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"
+            "skip", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"
         ]),
         "English is failing"
     );
