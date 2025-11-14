@@ -9,13 +9,21 @@ const ENGLISH: [&str; 11] = [
 ];
 
 ///returns number vector
-/// works by splitting by word and matching it to number
+/// input should be split by words
 fn go(input: Vec<&str>) -> Vec<i32> {
     let mut result: Vec<i32> = vec![];
+
+    for word in input {
+        if let Some(pos) = CHINESE.iter().position(|&s| s.eq_ignore_ascii_case(word)) {
+            result.push(pos as i32);
+        } else if let Some(pos) = ENGLISH.iter().position(|&s| s.eq_ignore_ascii_case(word)) {
+            result.push(pos as i32);
+        }
+    }
 
     result
 }
 
 fn main() {
-    println!("{:?}", go(vec!["yi", "three", "wu", "ten", "ling"]));
+    println!("{:?}", go(vec!["yi", "threE", "wu", "ten", "ling"]));
 }
