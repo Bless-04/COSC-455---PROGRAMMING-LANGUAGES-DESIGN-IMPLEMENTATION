@@ -19,6 +19,9 @@ attire(sir_raymond,pincenez):-attire(mr_woodley,tattered_cuffs).
 % Someone who was in room 16 was wearing tattered cuffs. 
 attire(X,tattered_cuffs):-room(X,16). 
 
+%The person who was in Room 12 had grey hair. 
+hair(X,grey) :- room(X,12).
+
 hair(X,black):-room(X,14).
 hair(X,brown):-attire(X,pincenez).
 hair(X,red):-attire(X,tattered_cuffs).
