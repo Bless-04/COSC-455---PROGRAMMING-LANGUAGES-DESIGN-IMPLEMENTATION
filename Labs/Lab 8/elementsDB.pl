@@ -1,3 +1,9 @@
+% Student exercise profile
+:- set_prolog_flag(occurs_check, error).        % disallow cyclic terms
+:- set_prolog_stack(global, limit(8 000 000)).  % limit term space (8Mb)
+:- set_prolog_stack(local,  limit(2 000 000)).  % limit environment space
+
+% Your program goes here
 % Elementary Data
 
 %First some convenient Abreviations/overloadings
@@ -186,3 +192,19 @@ print_periodic_table:-isgroup(G), nl, write(G), nl, write(':   '),
 	ingroup(An,G),
 	write(Symb), write(' '),
 	fail.
+
+print_radioactive_element:-element(Name, _, _, R, _,_,_, _),
+	R \= not_radioactive ,
+   	nl, write('['), write(Name), write(']'),  nl,
+    print_element(Name),  fail.
+
+
+%print_radioactive_elements :- element(X,_,_,R=radioactive,_,_,_,_).
+    
+% provide a listing of the names of all radioactive elements 
+
+
+
+/** <examples> Your example queries go here, e.g.
+?- member(X, [cat, mouse]).
+*/
