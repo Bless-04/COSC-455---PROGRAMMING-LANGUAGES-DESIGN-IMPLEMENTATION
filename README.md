@@ -4,7 +4,6 @@ Coursework for COSC 455 - Programming Languages Design & Implementation at Towso
 
 ## Repository Structure
 
-- **/Assignments** - General assignments.
 - [**/Labs**](Labs) - Lab Assignments
-- **/Projects** - Projects assignments
+- [**/Projects**](Projects) - Projects 1 to 3
 
