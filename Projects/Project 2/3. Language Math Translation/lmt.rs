@@ -18,6 +18,8 @@ fn match_word(input: &str) -> Option<i32> {
     }
 }
 
+/// Exist to only print
+
 /// exists to match word doc output
 /// n+...n = sum
 fn print_sum(input: &Vec<i32>) -> i32 {
@@ -47,6 +49,18 @@ fn print_product(input: &Vec<i32>) -> i32 {
     }
     product
 }
+/// exists because no looping
+fn translation_helper(input: &Vec<&str>, result: &mut Vec<i32>) -> Vec<i32> {
+    if input.is_empty() {
+        return vec![];
+    }
+
+    if let Some(number) = match_word(input.first().unwrap()) {
+        result.push(number);
+    }
+
+    translation_helper(&input[1..].to_vec(), result) //to_vec() fixed issue
+}
 
 ///returns number vector
 /// input should be split by words
@@ -57,11 +71,7 @@ fn go(input: &Vec<&str>) -> Vec<i32> {
 
     let mut result: Vec<i32> = vec![];
 
-    for word in input {
-        if let Some(number) = match_word(word) {
-            result.push(number);
-        }
-    }
+    translation_helper(input, &mut result);
 
     println!("Translation: {:?}", result);
 
@@ -83,9 +93,7 @@ fn main() {
     let input = vec!["yi", "josh", "three", "si"];
     go(&input);
 
-    /*
     let numbers = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 
     assert_eq!(
         numbers,
@@ -102,5 +110,4 @@ fn main() {
         ]),
         "English is failing"
     );
-    */
 }
