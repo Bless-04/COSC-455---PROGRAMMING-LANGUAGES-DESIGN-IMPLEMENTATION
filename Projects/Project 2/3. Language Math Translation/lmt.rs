@@ -29,7 +29,8 @@ fn print_sum(input: &Vec<i32>, index: usize, mut sum: i32) -> i32 {
     print_sum(input, index + 1, sum)
 }
 
-//product should start at 0
+//product should start at 1
+/// n*...n = product
 fn print_product(input: &Vec<i32>, index: usize, mut product: i32) -> i32 {
     product *= input[index];
     if index == input.len() - 1 {
@@ -39,6 +40,7 @@ fn print_product(input: &Vec<i32>, index: usize, mut product: i32) -> i32 {
     print!("{} * ", input[index]);
     print_product(input, index + 1, product)
 }
+
 /// exists because no looping
 fn translation_helper(input: &Vec<&str>, result: &mut Vec<i32>) -> Vec<i32> {
     if input.is_empty() {
