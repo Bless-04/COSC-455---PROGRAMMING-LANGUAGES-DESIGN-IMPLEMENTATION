@@ -29,17 +29,15 @@ fn print_sum(input: &Vec<i32>, index: usize, mut sum: i32) -> i32 {
     print_sum(input, index + 1, sum)
 }
 
-fn print_product(input: &Vec<i32>) -> i32 {
-    let mut product: i32 = 1;
-    for (i, &num) in input.iter().enumerate() {
-        product *= num;
-        if i < input.len() - 1 {
-            print!("{} * ", num);
-        } else {
-            println!("{} = {}", num, product);
-        }
+//product should start at 0
+fn print_product(input: &Vec<i32>, index: usize, mut product: i32) -> i32 {
+    product *= input[index];
+    if index == input.len() - 1 {
+        println!("{} = {}", input[index], product);
+        return product;
     }
-    product
+    print!("{} * ", input[index]);
+    print_product(input, index + 1, product)
 }
 /// exists because no looping
 fn translation_helper(input: &Vec<&str>, result: &mut Vec<i32>) -> Vec<i32> {
@@ -67,22 +65,21 @@ fn go(input: &Vec<&str>) -> Vec<i32> {
 
     println!("Translation: {:?}", result);
 
+    let start_index = 0;
+
     print!("Addition: ");
-    print_sum(&result, 0, 0);
+    print_sum(&result, start_index, 0);
 
     print!("Multiplication: ");
-    print_product(&result);
+    print_product(&result, start_index, 1);
 
     println!();
     result
 }
 
 fn main() {
-    /*
-        let input = vec!["yi", "nine", "six", "ba"];
-        go(&input);
-
-    */
+    let input = vec!["yi", "nine", "six", "ba"];
+    go(&input);
 
     let input = vec!["yi", "josh", "three", "si"];
     go(&input);
