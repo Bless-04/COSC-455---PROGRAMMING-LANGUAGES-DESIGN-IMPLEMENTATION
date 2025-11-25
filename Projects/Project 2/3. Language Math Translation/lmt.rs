@@ -18,26 +18,18 @@ fn match_word(input: &str) -> Option<i32> {
     }
 }
 
-/// Exist to only print
-
-/// exists to match word doc output
 /// n+...n = sum
-fn print_sum(input: &Vec<i32>) -> i32 {
-    print!("Addition: ");
-    let mut sum: i32 = 0;
-    for (i, &num) in input.iter().enumerate() {
-        sum += num;
-        if i < input.len() - 1 {
-            print!("{} + ", num);
-        } else {
-            println!("{} = {}", num, sum);
-        }
+fn print_sum(input: &Vec<i32>, index: usize, mut sum: i32) -> i32 {
+    sum += input[index];
+    if index == input.len() - 1 {
+        println!("{} = {}", input[index], sum);
+        return sum;
     }
-    sum
+    print!("{} + ", input[index]);
+    print_sum(input, index + 1, sum)
 }
 
 fn print_product(input: &Vec<i32>) -> i32 {
-    print!("Multiplication: ");
     let mut product: i32 = 1;
     for (i, &num) in input.iter().enumerate() {
         product *= num;
@@ -75,8 +67,10 @@ fn go(input: &Vec<&str>) -> Vec<i32> {
 
     println!("Translation: {:?}", result);
 
-    print_sum(&result);
+    print!("Addition: ");
+    print_sum(&result, 0, 0);
 
+    print!("Multiplication: ");
     print_product(&result);
 
     println!();
