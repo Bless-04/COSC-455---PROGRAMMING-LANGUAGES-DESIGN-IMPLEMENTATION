@@ -3,6 +3,7 @@ fun hitchhiker [] = false
   | hitchhiker (42 :: _ ) = true
   | hitchhiker list = hitchhiker (tl list);
 
-hitchhiker [1,2,3,4,42];
-hitchhiker [0,2,3,4,1];
-hitchhiker [42,2,3,4,1];
+(*everything should be true*)
+true = hitchhiker [1,2,3,4,42];
+false = hitchhiker [0,2,3,4,1];
+true = hitchhiker [42,2,3,4,1];
