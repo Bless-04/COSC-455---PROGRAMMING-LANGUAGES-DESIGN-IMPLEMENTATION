@@ -23,7 +23,7 @@ partial class Program
 
         if (args.Length == 0)
         {
-            Console.WriteLine("Usage: Program.exe \"flight(start, end)\"");
+            Console.WriteLine("Usage: Program_3b.exe \"flight(start, end)\"");
             return;
         }
 
