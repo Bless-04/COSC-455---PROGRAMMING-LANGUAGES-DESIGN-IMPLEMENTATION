@@ -70,10 +70,10 @@ swipl "Program 4\prog4.pl"
 **swipl**
 
 ```prolog
-is_teaching(dehlinger, time(t, 1100)).
-is_instructor(mallik, cosc465).
-is_busy(sai, w, 1900, location(yr7800, 125)).
-cannot_meet(time(t, 1100), dehlinger, mallik).
+is_teaching(dehlinger, time(t, 1100)),
+is_instructor(mallik, cosc465),
+is_busy(sai, w, 1900, location(yr7800, 125)),
+cannot_meet(time(t, 1100), dehlinger, mallik),
 schedule_conflict(cosc455, cosc236).
 ```
 
