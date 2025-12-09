@@ -19,6 +19,9 @@ swipl "Program 1\prog1.pl"
 
 ```prolog
 translate(Chinese, [one, two]).
+```
+
+```prolog
 translate([ling, yi, er], English).
 ```
 
@@ -36,7 +39,13 @@ swipl "Program 3\prog3.pl"
 
 ```prolog
 flight(fresno, seattle).
+```
+
+```prolog
 flight(seattle, atlanta).
+```
+
+```
 flight(dallas, boston).
 ```
 
@@ -46,6 +55,9 @@ flight(dallas, boston).
 
 **Command Line**
 
+this one changes the directory to the Program_3b directory.
+The directory needs to be changed back for the other Programs to work
+
 ```bash
 cd "Program 3\Program_3b" && dotnet run
 ```
@@ -54,6 +66,9 @@ same as prolog but no dot at the end
 
 ```bash
 dotnet run "flight(fresno, seattle)"
+```
+
+```bash
 dotnet run "flight(seattle, atlanta)"
 ```
 
@@ -70,10 +85,22 @@ swipl "Program 4\prog4.pl"
 **swipl**
 
 ```prolog
-is_teaching(dehlinger, time(t, 1100)),
-is_instructor(mallik, cosc465),
-is_busy(sai, w, 1900, location(yr7800, 125)),
-cannot_meet(time(t, 1100), dehlinger, mallik),
+is_teaching(dehlinger, time(t, 1100)).
+```
+
+```prolog
+is_instructor(mallik, cosc465).
+```
+
+```prolog
+is_busy(sai, w, 1900, location(yr7800, 125)).
+```
+
+```prolog
+cannot_meet(time(t, 1100), dehlinger, mallik).
+```
+
+```prolog
 schedule_conflict(cosc455, cosc236).
 ```
 
@@ -91,8 +118,17 @@ swipl "Program 5\prog5.pl"
 
 ```prolog
 suspect(Person).
+```
+
+```prolog
 motive(Person, greed).
+```
+
+```prolog
 motive(Person, hatred).
+```
+
+```prolog
 spouse(X, Y).
 ```
 
