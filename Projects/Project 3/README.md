@@ -108,7 +108,7 @@ schedule_conflict(cosc455, cosc236).
 
 **Folder:** `Program 5/prog5.pl`
 
-**How to Run:**
+**command line:**
 
 ```bash
 swipl "Program 5\prog5.pl"
