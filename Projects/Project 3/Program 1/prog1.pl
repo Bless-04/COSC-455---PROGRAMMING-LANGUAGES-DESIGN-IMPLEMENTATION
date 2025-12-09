@@ -17,3 +17,4 @@ translate([], []).
 translate([L1|LT1], [L2|LT2]) :-
     translation(L1, L2),
     translate(LT1, LT2).
+
